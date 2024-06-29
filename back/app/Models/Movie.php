@@ -9,6 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Movie extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['title', 'html'];
+    protected $fillable = ['title', 'json', 'proximo'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

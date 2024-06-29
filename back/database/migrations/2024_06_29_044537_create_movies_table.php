@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('html');
+            $table->text('json');
+            $table->boolean('proximo')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

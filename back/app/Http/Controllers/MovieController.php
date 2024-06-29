@@ -12,14 +12,16 @@ class MovieController extends Controller{
     public function store(Request $request){
         $movie = new Movie();
         $movie->title = $request->title;
-        $movie->html = $request->html;
+        $movie->json = $request->json;
+        $movie->proximo = $request->proximo;
         $movie->save();
         return $movie;
     }
     public function update(Request $request, $id){
         $movie = Movie::find($id);
         $movie->title = $request->title;
-        $movie->html = $request->html;
+        $movie->json = $request->json;
+        $movie->proximo = $request->proximo;
         $movie->save();
         return $movie;
     }
