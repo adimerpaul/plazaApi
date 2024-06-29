@@ -22,5 +22,11 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::put('/movies/{id}', [\App\Http\Controllers\MovieController::class, 'update']);
     Route::delete('/movies/{id}', [\App\Http\Controllers\MovieController::class, 'destroy']);
 });
+//rutas para moviles on api/mobil/asa
+Route::group(['prefix' => 'mobil'], function(){
+    Route::get('/peliculas', [\App\Http\Controllers\MovieController::class, 'peliculas']);
+    Route::get('/proximos', [\App\Http\Controllers\MovieController::class, 'proximos']);
+});
+
 
 Route::get('/compromiso/{loan_id}', [\App\Http\Controllers\ReportController::class, 'compromiso']);

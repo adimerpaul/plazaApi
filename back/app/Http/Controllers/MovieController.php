@@ -6,6 +6,22 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller{
+    function peliculas(){
+        $movies =Movie::where('activo', 1)->where('proximo', 0)->get();
+        $movieRes = [];
+        foreach ($movies as $movie){
+            $movieRes[] = json_decode($movie->json);
+        }
+        return $movieRes;
+    }
+    function proximos(){
+        $movies =Movie::where('activo', 1)->where('proximo', 1)->get();
+        $movieRes = [];
+        foreach ($movies as $movie){
+            $movieRes[] = json_decode($movie->json);
+        }
+        return $movieRes;
+    }
     public function index(){
         return Movie::orderBy('id', 'desc')->get();
     }
