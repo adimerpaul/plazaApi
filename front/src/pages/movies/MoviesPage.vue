@@ -130,8 +130,8 @@ export  default {
         proximo: 0,
         activo: 1,
       },
-      urlSearch:"https://api.themoviedb.org/3/search/movie?api_key=eccf4da78932269df065470af1b8c6d9&language=es-ES&query=",
-      urlMovie:"https://api.themoviedb.org/3/movie/xxxxx?api_key=eccf4da78932269df065470af1b8c6d9&language=es-ES",
+      urlSearch:"https://api.themoviedb.org/3/search/movie?api_key=xxxxxxxxxx&language=es-ES&query=",
+      urlMovie:"https://api.themoviedb.org/3/movie/xxxxx?api_key=xxxxxxxxxx&language=es-ES",
       loading: false,
       filter: '',
       dialogMovie: false,
@@ -139,6 +139,12 @@ export  default {
     }
   },
   methods: {
+    created() {
+      const token = import.meta.env.VITE_TOKEN
+      this.urlSearch = this.urlSearch.replace('xxxxxxxxxx', token)
+      this.urlMovie = this.urlMovie.replace('xxxxxxxxxx', token)
+      this.getMovies()
+    },
     clickDelete(movie) {
       this.loading = true
       this.$alert.confirm('¿Estás seguro de eliminar la película?').onOk(() => {
@@ -236,8 +242,5 @@ export  default {
       this.loading = false
     }
   },
-  created() {
-    this.getMovies()
-  }
 }
 </script>
