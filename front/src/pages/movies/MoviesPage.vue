@@ -138,13 +138,13 @@ export  default {
       resultMovies: []
     }
   },
+  created() {
+    const token = import.meta.env.VITE_TOKEN
+    this.urlSearch = this.urlSearch.replace('xxxxxxxxxx', token)
+    this.urlMovie = this.urlMovie.replace('xxxxxxxxxx', token)
+    this.getMovies()
+  },
   methods: {
-    created() {
-      const token = import.meta.env.VITE_TOKEN
-      this.urlSearch = this.urlSearch.replace('xxxxxxxxxx', token)
-      this.urlMovie = this.urlMovie.replace('xxxxxxxxxx', token)
-      this.getMovies()
-    },
     clickDelete(movie) {
       this.loading = true
       this.$alert.confirm('¿Estás seguro de eliminar la película?').onOk(() => {
