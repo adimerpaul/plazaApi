@@ -118,10 +118,11 @@ export  default {
       movies: [],
       columns: [
         {name: 'actions', label: 'Acciones', align: 'center', field: 'actions'},
-        {name: 'id', label: 'ID', align: 'center', field: 'id'},
-        {name: 'title', label: 'Título', align: 'left', field: 'title'},
         {name: 'proximo', label: 'Próximo', align: 'center', field: 'proximo'},
         {name: 'activo', label: 'Activo', align: 'center', field: 'activo'},
+        {name: 'title', label: 'Título', align: 'left', field: 'title'},
+        {name: 'id', label: 'ID', align: 'center', field: 'id'},
+
       ],
       movie: {
         title: '',
