@@ -14,6 +14,7 @@ class MovieController extends Controller{
         $movie->title = $request->title;
         $movie->json = $request->json;
         $movie->proximo = $request->proximo;
+        $movie->activo = $request->activo;
         $movie->save();
         return $movie;
     }
@@ -22,6 +23,7 @@ class MovieController extends Controller{
         $movie->title = $request->title;
         $movie->json = $request->json;
         $movie->proximo = $request->proximo;
+        $movie->activo = $request->activo;
         $movie->save();
         return $movie;
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('json');
             $table->boolean('proximo')->default(false);
+            $table->boolean('activo')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
