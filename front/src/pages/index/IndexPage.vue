@@ -1,28 +1,28 @@
 <template>
   <q-page class="q-pa-xs bg-grey-3">
     <div class="row">
-      <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>
-      </div>
-      <div class="col-6 col-md-2 q-pa-xs">
-        <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>
-      </div>
-      <div class="col-12 col-md-2 q-pa-xs">
-        <q-input v-model="concepto" label="Buscar por concepto" dense outlined class="bg-white" debounce="300" clearable
-                 placeholder="Buscar por concepto" @update:model-value="salesGet"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="col-12 col-md-2 text-right">
-        <q-btn label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar"/>
-      </div>
-      <div class="col-12 col-md-4 text-right">
-        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sales"/>
-        <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>
-      </div>
+<!--      <div class="col-6 col-md-2 q-pa-xs">-->
+<!--        <q-input v-model="fechaInicioSemana" label="Fecha inicio" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>-->
+<!--      </div>-->
+<!--      <div class="col-6 col-md-2 q-pa-xs">-->
+<!--        <q-input v-model="fechaFinSemana" label="Fecha fin" dense outlined type="date" class="bg-white" @update:model-value="salesGet"/>-->
+<!--      </div>-->
+<!--      <div class="col-12 col-md-2 q-pa-xs">-->
+<!--        <q-input v-model="concepto" label="Buscar por concepto" dense outlined class="bg-white" debounce="300" clearable-->
+<!--                 placeholder="Buscar por concepto" @update:model-value="salesGet"-->
+<!--        >-->
+<!--          <template v-slot:prepend>-->
+<!--            <q-icon name="search" />-->
+<!--          </template>-->
+<!--        </q-input>-->
+<!--      </div>-->
+<!--      <div class="col-12 col-md-2 text-right">-->
+<!--        <q-btn label="Exportar" color="primary"  icon="get_app" no-caps rounded @click="exportar"/>-->
+<!--      </div>-->
+<!--      <div class="col-12 col-md-4 text-right">-->
+<!--        <q-btn label="Nuevo Venta" color="green"  icon="add_circle_outline" no-caps rounded to="/sales"/>-->
+<!--        <q-btn label="Nuevo Gasto" color="red"  icon="add_circle_outline" no-caps rounded @click="gastoDialog = true"/>-->
+<!--      </div>-->
       <div class="col-12 col-md-3 q-pa-xs">
         <CardComponent :amount="balance" color="grey" title="Balance" icon="account_balance" />
       </div>
@@ -35,129 +35,129 @@
       <div class="col-12 col-md-3 q-pa-xs">
         <CardComponent :amount="gasto" color="red" title="Gastos" icon="o_trending_down" />
       </div>
-      <div class="col-12">
-        <q-table :columns="columns" :rows="sales" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells
-                 no-data-label="No hay ventas" no-results-label="No hay ventas"
-                 title="Historial de ventas"
-        >
-          <template v-slot:top-right>
-            <q-input outlined v-model="filter" debounce="300" placeholder="Buscar" dense>
-              <template v-slot:append>
-                <q-btn flat round dense icon="search" />
-              </template>
-            </q-input>
-          </template>
-          <template v-slot:header="props">
-            <q-tr :props="props" class="bg-primary text-white">
-              <q-th key="opcion" :props="props" auto-width>Opcion</q-th>
-              <q-th key="proveedorcliente" :props="props">Proveedor / cliente</q-th>
-              <q-th key="montoTotal" :props="props">Monto total</q-th>
-              <q-th key="fechayhora" :props="props">Fecha y hora</q-th>
-              <q-th key="concepto" :props="props">Concepto</q-th>
-              <q-th key="comentario" :props="props">Comentario</q-th>
-              <q-th key="pago" :props="props">Pago</q-th>
-              <q-th key="egresoingreso" :props="props">Egreso / ingreso</q-th>
-              <q-th key="user" :props="props">Usuario</q-th>
-              <q-th key="lugar" :props="props">Lugar</q-th>
-            </q-tr>
-          </template>
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="opcion" :props="props" auto-width>
-                <!--                <q-btn-group v-if="props.row.status=='ACTIVO'">-->
-                <!--                  <q-btn dense label="Anular" color="red-4" size="10px"-->
-                <!--                         no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">-->
-                <!--                    <q-tooltip>Anular venta</q-tooltip>-->
-                <!--                  </q-btn>-->
-                <!--                </q-btn-group>-->
-                <q-btn-dropdown dense icon="more_vert" align="right" label="Opciones" no-caps
-                                :color="props.row.tipo_venta=='INGRESO'?'green-9':'red-9'"
-                                size="10px" v-if="props.row.status=='ACTIVO'">
-                  <q-item clickable v-close-popup class="text-center">
-                    <q-btn dense label="Anular" color="red-4" size="10px" class="full-width"
-                           no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">
-                      <q-tooltip>Anular venta</q-tooltip>
-                    </q-btn>
-                  </q-item>
-                  <q-item clickable v-close-popup class="text-center">
-                    <q-btn dense label="Imprimir" color="green-4" size="10px" class="full-width"
-                           no-caps no-wrap icon="print" @click="reimprimirNota(props.row)">
-                      <q-tooltip>Imprimir nota</q-tooltip>
-                    </q-btn>
-                  </q-item>
-                  <!--                  <q-item clickable v-close-popup class="text-center">-->
-                  <!--                    <q-btn dense label="Modificar" color="orange-4" size="10px" class="full-width"-->
-                  <!--                           no-caps no-wrap icon="o_edit" @click="modificarNota(props.row)">-->
-                  <!--                      <q-tooltip>Modificar nota</q-tooltip>-->
-                  <!--                    </q-btn>-->
-                  <!--                  </q-item>-->
-                </q-btn-dropdown>
-                <div v-else>
-<!--                  <q-btn dense label="Anulado" color="grey-4" size="10px" no-caps no-wrap icon="o_highlight_off" />-->
-                  <q-chip label="Anulado" color="grey-4" text-color="white" dense flat />
-                </div>
-              </q-td>
-              <q-td key="proveedorcliente" :props="props">
-                <div class="text-grey-8" v-if="props.row.client">
-                  {{ props.row.client?.name}} {{ props.row.client?.lastname}}
-                </div>
-              </q-td>
-              <q-td key="montoTotal" :props="props" class="text-right">
-                <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}-7 text-bold` ">
-                  {{ props.row.total }} $
-                </span>
-              </q-td>
-              <q-td key="fechayhora" :props="props" style="min-width: 150px">
-                {{ $filters.dateDmYHis(props.row.date) }}
-              </q-td>
-              <q-td key="concepto" :props="props" class="">
-                <div>
-                  <!--                  {{ props.row.tipo_venta}}-->
-                  <q-btn icon="o_local_atm" size="15px" :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-7`"
-                         :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat
-                         style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>
-                  <div style="padding-left: 15px">
-                    <div class=" q-ml-xs" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.description }}</div>
-                  </div>
-                </div>
-              </q-td>
-              <q-td key="comentario" :props="props">
-                <div class="" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.observacion }}</div>
-              </q-td>
-              <q-td key="pago" :props="props">
-                <q-chip :color="`${props.row.pago=='EFECTIVO'?'blue':'green'}-5`" text-color="white" dense flat :label="props.row.pago"/>
-              </q-td>
-              <q-td key="egresoingreso" :props="props">
-                <q-chip :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-5`" text-color="white" dense flat :label="props.row.tipo_venta"/>
-              </q-td>
-              <q-td key="user" :props="props">
-                <p>{{ props.row.user?.name }}</p>
-              </q-td>
-              <q-td key="lugar" :props="props">
-                <p>{{ props.row.lugar }}</p>
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-<!--                <pre>{{sales}}</pre>-->
-      </div>
+<!--      <div class="col-12">-->
+<!--        <q-table :columns="columns" :rows="sales" dense :rows-per-page-options="[0]" :filter="filter" :loading="loading" wrap-cells-->
+<!--                 no-data-label="No hay ventas" no-results-label="No hay ventas"-->
+<!--                 title="Historial de ventas"-->
+<!--        >-->
+<!--          <template v-slot:top-right>-->
+<!--            <q-input outlined v-model="filter" debounce="300" placeholder="Buscar" dense>-->
+<!--              <template v-slot:append>-->
+<!--                <q-btn flat round dense icon="search" />-->
+<!--              </template>-->
+<!--            </q-input>-->
+<!--          </template>-->
+<!--          <template v-slot:header="props">-->
+<!--            <q-tr :props="props" class="bg-primary text-white">-->
+<!--              <q-th key="opcion" :props="props" auto-width>Opcion</q-th>-->
+<!--              <q-th key="proveedorcliente" :props="props">Proveedor / cliente</q-th>-->
+<!--              <q-th key="montoTotal" :props="props">Monto total</q-th>-->
+<!--              <q-th key="fechayhora" :props="props">Fecha y hora</q-th>-->
+<!--              <q-th key="concepto" :props="props">Concepto</q-th>-->
+<!--              <q-th key="comentario" :props="props">Comentario</q-th>-->
+<!--              <q-th key="pago" :props="props">Pago</q-th>-->
+<!--              <q-th key="egresoingreso" :props="props">Egreso / ingreso</q-th>-->
+<!--              <q-th key="user" :props="props">Usuario</q-th>-->
+<!--              <q-th key="lugar" :props="props">Lugar</q-th>-->
+<!--            </q-tr>-->
+<!--          </template>-->
+<!--          <template v-slot:body="props">-->
+<!--            <q-tr :props="props">-->
+<!--              <q-td key="opcion" :props="props" auto-width>-->
+<!--                &lt;!&ndash;                <q-btn-group v-if="props.row.status=='ACTIVO'">&ndash;&gt;-->
+<!--                &lt;!&ndash;                  <q-btn dense label="Anular" color="red-4" size="10px"&ndash;&gt;-->
+<!--                &lt;!&ndash;                         no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <q-tooltip>Anular venta</q-tooltip>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  </q-btn>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </q-btn-group>&ndash;&gt;-->
+<!--                <q-btn-dropdown dense icon="more_vert" align="right" label="Opciones" no-caps-->
+<!--                                :color="props.row.tipo_venta=='INGRESO'?'green-9':'red-9'"-->
+<!--                                size="10px" v-if="props.row.status=='ACTIVO'">-->
+<!--                  <q-item clickable v-close-popup class="text-center">-->
+<!--                    <q-btn dense label="Anular" color="red-4" size="10px" class="full-width"-->
+<!--                           no-caps no-wrap icon="o_highlight_off" @click="saleAnular(props.row.id)">-->
+<!--                      <q-tooltip>Anular venta</q-tooltip>-->
+<!--                    </q-btn>-->
+<!--                  </q-item>-->
+<!--                  <q-item clickable v-close-popup class="text-center">-->
+<!--                    <q-btn dense label="Imprimir" color="green-4" size="10px" class="full-width"-->
+<!--                           no-caps no-wrap icon="print" @click="reimprimirNota(props.row)">-->
+<!--                      <q-tooltip>Imprimir nota</q-tooltip>-->
+<!--                    </q-btn>-->
+<!--                  </q-item>-->
+<!--                  &lt;!&ndash;                  <q-item clickable v-close-popup class="text-center">&ndash;&gt;-->
+<!--                  &lt;!&ndash;                    <q-btn dense label="Modificar" color="orange-4" size="10px" class="full-width"&ndash;&gt;-->
+<!--                  &lt;!&ndash;                           no-caps no-wrap icon="o_edit" @click="modificarNota(props.row)">&ndash;&gt;-->
+<!--                  &lt;!&ndash;                      <q-tooltip>Modificar nota</q-tooltip>&ndash;&gt;-->
+<!--                  &lt;!&ndash;                    </q-btn>&ndash;&gt;-->
+<!--                  &lt;!&ndash;                  </q-item>&ndash;&gt;-->
+<!--                </q-btn-dropdown>-->
+<!--                <div v-else>-->
+<!--&lt;!&ndash;                  <q-btn dense label="Anulado" color="grey-4" size="10px" no-caps no-wrap icon="o_highlight_off" />&ndash;&gt;-->
+<!--                  <q-chip label="Anulado" color="grey-4" text-color="white" dense flat />-->
+<!--                </div>-->
+<!--              </q-td>-->
+<!--              <q-td key="proveedorcliente" :props="props">-->
+<!--                <div class="text-grey-8" v-if="props.row.client">-->
+<!--                  {{ props.row.client?.name}} {{ props.row.client?.lastname}}-->
+<!--                </div>-->
+<!--              </q-td>-->
+<!--              <q-td key="montoTotal" :props="props" class="text-right">-->
+<!--                <span :class="`text-${props.row.tipo_venta=='INGRESO'?'green':'red'}-7 text-bold` ">-->
+<!--                  {{ props.row.total }} $-->
+<!--                </span>-->
+<!--              </q-td>-->
+<!--              <q-td key="fechayhora" :props="props" style="min-width: 150px">-->
+<!--                {{ $filters.dateDmYHis(props.row.date) }}-->
+<!--              </q-td>-->
+<!--              <q-td key="concepto" :props="props" class="">-->
+<!--                <div>-->
+<!--                  &lt;!&ndash;                  {{ props.row.tipo_venta}}&ndash;&gt;-->
+<!--                  <q-btn icon="o_local_atm" size="15px" :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-7`"-->
+<!--                         :class="`bg-${props.row.tipo_venta=='INGRESO'?'green':'red'}-2`" dense flat-->
+<!--                         style="padding: 0px; margin: 0px; border-radius: 0px;position: absolute;top: 5px;left: 0px;"/>-->
+<!--                  <div style="padding-left: 15px">-->
+<!--                    <div class=" q-ml-xs" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.description }}</div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </q-td>-->
+<!--              <q-td key="comentario" :props="props">-->
+<!--                <div class="" style="width: 300px; white-space: normal; overflow-wrap: break-word;line-height: 0.9;">{{ props.row.observacion }}</div>-->
+<!--              </q-td>-->
+<!--              <q-td key="pago" :props="props">-->
+<!--                <q-chip :color="`${props.row.pago=='EFECTIVO'?'blue':'green'}-5`" text-color="white" dense flat :label="props.row.pago"/>-->
+<!--              </q-td>-->
+<!--              <q-td key="egresoingreso" :props="props">-->
+<!--                <q-chip :color="`${props.row.tipo_venta=='INGRESO'?'green':'red'}-5`" text-color="white" dense flat :label="props.row.tipo_venta"/>-->
+<!--              </q-td>-->
+<!--              <q-td key="user" :props="props">-->
+<!--                <p>{{ props.row.user?.name }}</p>-->
+<!--              </q-td>-->
+<!--              <q-td key="lugar" :props="props">-->
+<!--                <p>{{ props.row.lugar }}</p>-->
+<!--              </q-td>-->
+<!--            </q-tr>-->
+<!--          </template>-->
+<!--        </q-table>-->
+<!--&lt;!&ndash;                <pre>{{sales}}</pre>&ndash;&gt;-->
+<!--      </div>-->
     </div>
   </q-page>
-  <q-dialog v-model="gastoDialog" position="right" maximized>
-    <DialogGasto @gastoCreated="gastoCreated"/>
-  </q-dialog>
+<!--  <q-dialog v-model="gastoDialog" position="right" maximized>-->
+<!--    <DialogGasto @gastoCreated="gastoCreated"/>-->
+<!--  </q-dialog>-->
   <div id="myElement" class="hidden"></div>
 </template>
 
 <script>
 import moment from 'moment'
 import CardComponent from 'components/CardComponent.vue'
-import DialogGasto from 'pages/index/DialogGasto.vue'
+// import DialogGasto from 'pages/index/DialogGasto.vue'
 import { Imprimir } from 'src/addons/Imprimir'
 import { Excel } from 'src/addons/Excel'
 export default {
   name: 'IndexPage',
-  components: { DialogGasto, CardComponent },
+  components: { CardComponent },
   data () {
     return {
       gastoDialog: false,
@@ -183,7 +183,7 @@ export default {
     }
   },
   mounted () {
-    this.salesGet()
+    // this.salesGet()
   },
   methods: {
     exportar () {
