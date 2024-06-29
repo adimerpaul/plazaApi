@@ -118,6 +118,7 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: [
         { title: 'Inicio', icon: 'home', to: '/' },
+        { title: 'Movies', icon: 'movie', to: '/movies' }
       ],
     };
   },
