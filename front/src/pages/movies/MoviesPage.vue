@@ -94,7 +94,7 @@
               </q-avatar>
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{item.title}}</q-item-label>
+              <q-item-label>{{item.original_title}}</q-item-label>
               <q-item-label caption>{{item.release_date}}</q-item-label>
               <q-item-label caption>{{item.vote_average}}</q-item-label>
               <q-item-label caption>{{item.overview}}</q-item-label>
@@ -195,7 +195,7 @@ export  default {
     },
     copiMovie(item) {
       // console.log(item)
-      this.movie.title = item.title
+      this.movie.title = item.original_title
       const url = this.urlMovie.replace('xxxxx', item.id)
       this.loading = true
       this.$axios.get(url)
